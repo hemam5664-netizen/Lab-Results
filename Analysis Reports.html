@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>نتائج تحاليل معمل الإدارة الطبية</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; text-align: center; background-color: #f4f7f6; padding-top: 50px; }
+        .box { background: white; padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0px 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #0288d1; }
+        input { padding: 10px; font-size: 18px; width: 250px; text-align: center; border: 2px solid #ccc; border-radius: 5px; }
+        button { padding: 10px 20px; font-size: 18px; background-color: #2e7d32; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        button:hover { background-color: #1b5e20; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>معمل الإدارة الطبية - جامعة عين شمس</h2>
+        <p>أدخل كود المريض لعرض التقارير الخاصة به:</p>
+        <input type="text" id="patientCode" placeholder="أدخل الكود هنا">
+        <br>
+        <button onclick="searchDrive()">بحث عن النتيجة</button>
+    </div>
+
+    <script>
+        // معرف المجلد الأساسي لنتائج التحاليل لديك
+        const FOLDER_ID = "1Mu4DT6bsWW-pjQbBBIt-ZYDCjgrizroT";
+
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const codeParam = urlParams.get('q');
+            if (codeParam) {
+                document.getElementById('patientCode').value = codeParam;
+                searchDrive();
+            }
+        };
+
+        function searchDrive() {
+            var code = document.getElementById('patientCode').value.trim();
+            if(code !== "") {
+                // بحث شامل ودقيق يبحث عن الرقم سواء كان اسم مجلد أو داخل اسم ملف PDF (بين قوسين أو نص عادي) داخل المجلد المحدد فقط
+                var searchUrl = "https://drive.google.com/drive/search?q=" + encodeURIComponent(code) + "%20parent:" + FOLDER_ID;
+                window.location.href = searchUrl;
+            } else {
+                alert("يرجى إدخال الكود أولاً");
+            }
+        }
+    </script>
+</body>
+</html>
